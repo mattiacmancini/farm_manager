@@ -34,6 +34,7 @@ def register_user():
         )
         db.session.add(user)
         db.session.commit()
-        flash(f'Your account has been created. You are now able to log in', 'success')
+        print('Your account has been created. You are now able to log in')
         return jsonify({'message': 'Registration successful'}), 200
+    print(form.errors)
     return jsonify({'errors': form.errors}), 400
