@@ -39,3 +39,25 @@ def register_user():
         return jsonify({'message': 'Registration successful'}), 200
     print(form.errors)
     return jsonify({'errors': form.errors}), 400
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('dashboard'))
+    data = request.json
+    form = LoginForm(data=data)
+    error_list = {'errors':{}}
+    if form.validate():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            if bcrypt.check_password_hash(user.password, form.password.data):
+                # login_user(user, remember=form.remember.data)
+                return jsonify({'message': 'User successfully logged in!'}), 200
+            else:
+                error_list['errors']['password'] = 'The password entered is incorrect'
+                return jsonify(error_list), 400
+        else:
+            error_list['errors']['email'] = 'Email address not found.'
+            return jsonify(error_list), 400
+    print(form.errors)
+    return jsonify({'errors': form.errors}), 400

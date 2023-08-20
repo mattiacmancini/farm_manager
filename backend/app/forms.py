@@ -104,7 +104,6 @@ class LoginForm(FlaskForm):
 
     remember = BooleanField("Remember me")
 
-    submit = SubmitField("Login")
 
 
 # (3) UPDATE ACCOUNT FORM

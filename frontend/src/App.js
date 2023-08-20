@@ -23,7 +23,7 @@ function App() {
             <Routes>
               <Route exact path="/" element={<Home />} />
               <Route exact path="/about" element={<About />} />
-              <Route exact path="/login" element={<Login />} />
+              <Route exact path="/login" element={<Login baseUrl={baseUrl}/>} />
               <Route exact path="/register" element={<Register baseUrl={baseUrl}/>} />
             </Routes>
           </div>
