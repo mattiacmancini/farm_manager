@@ -15,6 +15,7 @@ class User(db.Model):
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     dob = db.Column(db.Date, nullable=False)
     password = db.Column(db.String(1000), nullable=False)
+    data_agreement = db.Column(db.Boolean, nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def __repr__(self):

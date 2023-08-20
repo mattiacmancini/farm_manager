@@ -67,7 +67,11 @@ class RegistrationForm(FlaskForm):
         ],
     )
 
-    submit = SubmitField("Sign up")
+    data_agreement = BooleanField(
+        "Data agreement",
+        validators=[DataRequired("You must agree to the Terms and Conditions")]
+    )
+
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()

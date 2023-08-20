@@ -30,7 +30,8 @@ def register_user():
             dob=form.dob.data,
             username=form.username.data, 
             email=form.email.data, 
-            password=hashed_password
+            password=hashed_password,
+            data_agreement=form.data_agreement.data
         )
         db.session.add(user)
         db.session.commit()
