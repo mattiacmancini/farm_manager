@@ -12,14 +12,34 @@ function Register(props) {
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [agreementCheck, setAgreementCheck] = useState(false);
+
   const [successMessage, setSuccessMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [errors, setErrors] = useState({});
+
+  const [firstNameSubmitted, setFirstNameSubmitted] = useState(false);
+  const [middleNameSubmitted, setMiddleNameSubmitted] = useState(false);
+  const [lastNameSubmitted, setLastNameSubmitted] = useState(false);
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [dobSubmitted, setDobSubmitted] = useState(false);
+  const [userNameSubmitted, setUserNameSubmitted] = useState(false);
+  const [passwordSubmitted, setPasswordSubmitted] = useState(false);
+  const [repeatPasswordSubmitted, setRepeatPasswordSubmitted] = useState(false);
+  const [agreementSubmitted, setAgreementSubmitted] = useState(false);
+  const submissionSetters = {
+    firstname: setFirstNameSubmitted,
+    lastname: setLastNameSubmitted,
+    middlename: setMiddleNameSubmitted,
+    dob: setDobSubmitted,
+    email:setEmailSubmitted,
+    username: setUserNameSubmitted,
+    password: setPasswordSubmitted,
+    confirm_password: setRepeatPasswordSubmitted,
+    data_agreement: setAgreementSubmitted
+  };
   // const redirect = useNavigate();
 
-  const validateCheckBox = (value) => {
-    return value
-  }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,13 +64,23 @@ function Register(props) {
       'username': userName,
       'email': email,
       'password': password,
-      'confirm_password': repeatPassword
+      'confirm_password': repeatPassword,
+      'data_agreement': agreementCheck
     }
 
     axios.post(`${props.baseUrl}register`, userData)
       .then(response => {
         if (response.status === 200) {
           setSuccessMessage('User registration successful: you can now login!')
+          setFirstNameSubmitted(true);
+          setMiddleNameSubmitted(true);
+          setLastNameSubmitted(true);
+          setEmailSubmitted(true);
+          setDobSubmitted(true);
+          setUserNameSubmitted(true);
+          setPasswordSubmitted(true);
+          setRepeatPasswordSubmitted(true);
+          setAgreementSubmitted(true);
           console.log("User registration successful:", response.data.message);
           // redirect('/login');
         }
@@ -58,9 +88,27 @@ function Register(props) {
       .catch(error => {
         if (error.response && error.response.status === 400) {
           console.log("User registration failed:", error.response.data.errors);
+          setFirstNameSubmitted(true);
+          setMiddleNameSubmitted(true);
+          setLastNameSubmitted(true);
+          setEmailSubmitted(true);
+          setDobSubmitted(true);
+          setUserNameSubmitted(true);
+          setPasswordSubmitted(true);
+          setRepeatPasswordSubmitted(true);
+          setAgreementSubmitted(true);
           setErrors(error.response.data.errors);
           setErrorMessage('Error registering user: check the data you entered!')
         } else {
+          setFirstNameSubmitted(true);
+          setMiddleNameSubmitted(true);
+          setLastNameSubmitted(true);
+          setEmailSubmitted(true);
+          setDobSubmitted(true);
+          setUserNameSubmitted(true);
+          setPasswordSubmitted(true);
+          setRepeatPasswordSubmitted(true);
+          setAgreementSubmitted(true);
           console.error("Error registering user:", error);
         }
       });
@@ -71,8 +119,11 @@ function Register(props) {
       ...errors,
       [fieldName]: "",
     }));
-
     setter(value);
+    const submittedSetter = submissionSetters[fieldName];
+    if (submittedSetter) {
+      submittedSetter(false);
+    }
   };
 
 
@@ -93,7 +144,7 @@ function Register(props) {
           <label htmlFor='firstNameValidator' className='form-label'>First Name</label>
           <input
             type='text'
-            className={`form-control ${errors['firstname'] ? 'is-invalid' : (firstName === "" ? "" : 'is-valid')}`}
+            className={`form-control ${firstNameSubmitted ? (errors['firstname'] ? 'is-invalid' : 'is-valid') : ''}`}
             id='firstNameValidator'
             value={firstName}
             onChange={(e) => handleInputChange(setFirstName, e.target.value, 'firstname')} />
@@ -104,7 +155,7 @@ function Register(props) {
           <label htmlFor='middleNameValidator' className='form-label'>Middle Name</label>
           <input
             type='text'
-            className={`form-control ${errors['middlename'] ? 'is-invalid' : (middleName === "" ? "" : 'is-valid')}`}
+            className={`form-control ${middleNameSubmitted ? (errors['middlename'] ? 'is-invalid' : 'is-valid') : ''}`}
             id='middleNameValidator'
             value={middleName}
             onChange={(e) => handleInputChange(setMiddleName, e.target.value, 'middlename')} />
@@ -115,7 +166,7 @@ function Register(props) {
           <label htmlFor='lastNameValidator' className='form-label'>Last Name</label>
           <input
             type='text'
-            className={`form-control ${errors['lastname'] ? 'is-invalid' : (lastName === "" ? "" : 'is-valid')}`}
+            className={`form-control ${lastNameSubmitted ? (errors['lastname'] ? 'is-invalid' : 'is-valid') : ''}`}
             id='lastNameValidator'
             value={lastName}
             onChange={(e) => handleInputChange(setLastName, e.target.value, 'lastname')} />
@@ -126,7 +177,7 @@ function Register(props) {
           <label htmlFor='emailValidator' className='form-label'>Email Address</label>
           <input
             type='email'
-            className={`form-control ${errors['email'] ? 'is-invalid' : (email === "" ? "" : 'is-valid')}`}
+            className={`form-control ${emailSubmitted ? (errors['email'] ? 'is-invalid' : 'is-valid') : ''}`}
             id='emailValidator'
             value={email}
             onChange={(e) => handleInputChange(setEmail, e.target.value, 'email')} />
@@ -137,7 +188,7 @@ function Register(props) {
           <label htmlFor='DoBValidator' className='form-label'>Date of Birth</label>
           <input
             type='date'
-            className={`form-control ${errors['dob'] ? 'is-invalid' : (dateOfBirth === "" ? "" : 'is-valid')}`}
+            className={`form-control ${dobSubmitted ? (errors['dob'] ? 'is-invalid' : 'is-valid') : ''}`}
             id='DoBValidator'
             value={dateOfBirth}
             onChange={(e) => handleInputChange(setDateOfBirth, e.target.value, 'dob')} />
@@ -149,7 +200,7 @@ function Register(props) {
           <label htmlFor='userNameValidator' className='form-label'>Username</label>
           <input
             type='text'
-            className={`form-control ${errors['username'] ? 'is-invalid' : (userName === "" ? "" : 'is-valid')}`}
+            className={`form-control ${userNameSubmitted ? (errors['username'] ? 'is-invalid' : 'is-valid') : ''}`}
             id='userNameValidator'
             value={userName}
             onChange={(e) => handleInputChange(setUserName, e.target.value, 'username')} />
@@ -160,7 +211,7 @@ function Register(props) {
           <label htmlFor='passwordValidator' className='form-label'>Password</label>
           <input
             type='password'
-            className={`form-control ${errors['password'] ? 'is-invalid' : (password === "" ? "" : 'is-valid')}`}
+            className={`form-control ${passwordSubmitted ? (errors['password'] ? 'is-invalid' : 'is-valid') : ''}`}
             id='passwordValidator'
             value={password}
             onChange={(e) => handleInputChange(setPassword, e.target.value, 'password')} />
@@ -171,7 +222,7 @@ function Register(props) {
           <label htmlFor='repeatPasswordValidator' className='form-label'>Re-enter your password</label>
           <input
             type='password'
-            className={`form-control ${errors['confirm_password'] ? 'is-invalid' : (repeatPassword === "" ? "" : 'is-valid')}`}
+            className={`form-control ${repeatPasswordSubmitted ? (errors['confirm_password'] ? 'is-invalid' : 'is-valid') : ''}`}
             id='repeatPasswordValidator'
             value={repeatPassword}
             onChange={(e) => handleInputChange(setRepeatPassword, e.target.value, 'confirm_password')} />
@@ -181,10 +232,11 @@ function Register(props) {
         <div className="col-md-12">
           <div className="form-check mt-3">
             <input
-              className={`form-check-input ${validateCheckBox(agreementCheck) ? 'is-valid' : 'is-invalid'}`}
-              type="checkbox" checked={agreementCheck} onChange={(e) => handleInputChange(setAgreementCheck, e.target.checked)}
+              className={`form-check-input ${agreementSubmitted ? (errors['data_agreement'] ? 'is-invalid' : 'is-valid') : ''}`}
+              type="checkbox" checked={agreementCheck} onChange={(e) => handleInputChange(setAgreementCheck, e.target.checked, 'data_agreement')}
               id="CheckBox" />
             <label className="form-check-label" htmlFor="CheckBox">Agree to terms and conditions</label>
+            <div className="valid-feedback">Looks good!</div>
             <div className="invalid-feedback">You need to agree with the T&C!</div>
           </div>
         </div>
