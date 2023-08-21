@@ -6,6 +6,7 @@ function Login(props) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [successMessage, setSuccessMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [errors, setErrors] = useState({});
@@ -19,6 +20,10 @@ function Login(props) {
     }));
     setter(value);
   };
+
+  const handleCheck = (e) => {
+    setRememberMe(e)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +42,8 @@ function Login(props) {
 
     const userData = {
       'email': email,
-      'password': password
+      'password': password,
+      'remember': rememberMe
     }
 
     axios.post(`${props.baseUrl}login`, userData)
@@ -99,6 +105,15 @@ function Login(props) {
               value={password}
               onChange={(e) => handleInputChange(setPassword, e.target.value, 'password')} />
             <div className="invalid-feedback">{errors['password']}</div>
+          </div>
+          <div className='col-md-12'>
+            <div className="form-check mt-3 mb-3">
+              <input
+                className='form-check-input'
+                type="checkbox" checked={rememberMe} onChange={(e) => handleCheck(e.target.checked)}
+                id="CheckBox" />
+              <label className="form-check-label" htmlFor="CheckBox">Remember me</label>
+            </div>
           </div>
           <div className="col-12">
             <button className="btn btn-dark mb-3 mt-3 me-2" type="submit" onClick={handleSubmit}>Login</button>
