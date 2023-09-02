@@ -118,8 +118,8 @@ function Login(props) {
           <div className="col-12">
             <button className="btn btn-dark mb-2 mt-2" type="submit" onClick={handleSubmit}>Login</button>
           </div>
-          <div class="border-top pt-3">
-            <small class="text-muted">
+          <div className="border-top pt-3">
+            <small className="text-muted">
               Need an account? <Link className="ml-2" to="/register">Sign Up Now</Link>
             </small>
           </div>

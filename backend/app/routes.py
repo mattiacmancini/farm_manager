@@ -34,7 +34,7 @@ def register_user():
             data_agreement=form.data_agreement.data
         )
         db.session.add(user)
-        db.session.commit()
+        db.session.commit() 
         print('Your account has been created. You are now able to log in')
         return jsonify({'message': 'Registration successful'}), 200
     print(form.errors)
