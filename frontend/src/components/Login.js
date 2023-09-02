@@ -49,7 +49,7 @@ function Login(props) {
     axios.post(`${props.baseUrl}login`, userData)
       .then(response => {
         if (response.status === 200) {
-          setSuccessMessage('User registration successful: you can now login!')
+          setSuccessMessage('User successfully logged-in!')
           setEmailSubmitted(true);
           setPasswordSubmitted(true);
           console.log("User successfully logged-in:", response.data.message);
@@ -116,8 +116,12 @@ function Login(props) {
             </div>
           </div>
           <div className="col-12">
-            <button className="btn btn-dark mb-3 mt-3 me-2" type="submit" onClick={handleSubmit}>Login</button>
-            <Link to="/" className="btn btn-dark mb-3 mt-3 me-2"> Back </Link>
+            <button className="btn btn-dark mb-2 mt-2" type="submit" onClick={handleSubmit}>Login</button>
+          </div>
+          <div class="border-top pt-3">
+            <small class="text-muted">
+              Need an account? <Link className="ml-2" to="/register">Sign Up Now</Link>
+            </small>
           </div>
         </div>
         <div className='col'></div>

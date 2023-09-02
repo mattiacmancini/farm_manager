@@ -31,7 +31,7 @@ function Register(props) {
     lastname: setLastNameSubmitted,
     middlename: setMiddleNameSubmitted,
     dob: setDobSubmitted,
-    email:setEmailSubmitted,
+    email: setEmailSubmitted,
     username: setUserNameSubmitted,
     password: setPasswordSubmitted,
     confirm_password: setRepeatPasswordSubmitted,
@@ -240,15 +240,16 @@ function Register(props) {
             <div className="invalid-feedback">You need to agree with the T&C!</div>
           </div>
         </div>
-        <div className="col-12">
-          <button className="btn btn-dark mb-3 me-2" type="button" onClick={handleSubmit}>
+        <div className="col-md-12">
+          <button className="btn btn-dark mt-2 mb-2" type="button" onClick={handleSubmit}>
             Register
           </button>
-          <Link to="/" className="btn btn-dark mb-3 me-2">
-            Back
-          </Link>
         </div>
-
+        <div className="border-top pt-3">
+          <small className="text-muted">
+            Already have an account? <Link className="ml-2" to="/login">Login Now</Link>
+          </small>
+        </div>
       </form>
     </React.Fragment>
   );
