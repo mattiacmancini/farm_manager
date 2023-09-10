@@ -18,6 +18,9 @@ from app import app, db, bcrypt
 from app.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                        RequestResetForm, ResetPasswordForm)
 from app.models import User
+from flask_jwt_extended import (create_access_token,get_jwt,get_jwt_identity,
+                               unset_jwt_cookies, jwt_required)
+
 
 @app.route('/')
 def home():
@@ -57,8 +60,6 @@ def register_user():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     """User login route"""
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('dashboard'))
     data = request.json
     form = LoginForm(data=data)
     error_list = {'errors':{}}
@@ -66,8 +67,9 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
-                # login_user(user, remember=form.remember.data)
-                return jsonify({'message': 'User successfully logged in!'}), 200
+                access_token = create_access_token(identity=user.email)
+                return jsonify({'message': 'User successfully logged in!',
+                                'token': access_token}), 200
             error_list['errors']['password'] = 'The password entered is incorrect'
             return jsonify(error_list), 400
         # pylint: disable=no-member
@@ -76,3 +78,17 @@ def login():
     # pylint: disable=no-member
     print(form.errors)
     return jsonify({'errors': form.errors}), 400
+
+
+@app.route('/dashboard', methods=['GET'])
+@jwt_required()
+def dashboard():
+    current_user = get_jwt_identity()
+    return jsonify({'message': 'Welcome to the dashboard, {}'.format(current_user)})
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    resp = jsonify({'message': 'Logged out successfully'})
+    unset_jwt_cookies(resp)
+    return resp, 200
+
