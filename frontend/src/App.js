@@ -6,6 +6,7 @@ import Register from './components/Register';
 import Login from './components/Login';
 import NavBar from './components/NavBar';
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import Dashboard from './components/Dashboard';
 
 
 
@@ -25,6 +26,7 @@ function App() {
               <Route exact path="/about" element={<About />} />
               <Route exact path="/login" element={<Login baseUrl={baseUrl}/>} />
               <Route exact path="/register" element={<Register baseUrl={baseUrl}/>} />
+              <Route exact path="/dashboard" element={<Dashboard/>}/>
             </Routes>
           </div>
         </div>

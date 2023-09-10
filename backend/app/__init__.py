@@ -5,6 +5,8 @@ from urllib.parse import quote_plus
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
+
 
 user_db_config = load_config('user_db')
 data_db_config = load_config('data_db')
@@ -17,13 +19,12 @@ app.config['SQLALCHEMY_BINDS'] = {
     'user_db': f"postgresql://{user_db_config['username']}:{quote_plus(user_db_config['password'])}@{user_db_config['host']}/{user_db_config['db_name']}",
     'data_db': f"postgresql://{data_db_config['username']}:{quote_plus(data_db_config['password'])}@{data_db_config['host']}/{data_db_config['db_name']}"
 }
+app.config["JWT_SECRET_KEY"] = "please-remember-to-change-me"
 
 CORS(app)
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
-login_manager = LoginManager(app)
-login_manager.login_view = 'login' #this sends back to the login route when trying manually to navigate to a route for only authenticated users
-login_manager.login_message_category = 'info'
+jwt = JWTManager(app)
 
 from app import routes

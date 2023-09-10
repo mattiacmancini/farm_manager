@@ -49,7 +49,9 @@ function Login(props) {
     axios.post(`${props.baseUrl}login`, userData)
       .then(response => {
         if (response.status === 200) {
-          setSuccessMessage('User successfully logged-in!')
+          localStorage.setItem('token', response.data.token);
+          console.log(response.data.token)
+          setSuccessMessage('User successfully logged-in!');
           setEmailSubmitted(true);
           setPasswordSubmitted(true);
           console.log("User successfully logged-in:", response.data.message);
