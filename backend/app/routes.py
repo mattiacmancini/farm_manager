@@ -9,6 +9,8 @@ Routes currently declared:
     - home
     - register
     - login
+    - dashboard
+    - logout
 """
 
 # from flask_login.mixins import UserMixin
@@ -21,7 +23,7 @@ from app.models import User
 from flask_jwt_extended import (create_access_token,get_jwt,get_jwt_identity,
                                unset_jwt_cookies, jwt_required)
 
-
+# pylint: disable=no-member
 @app.route('/')
 def home():
     """Route for the home page"""
@@ -47,13 +49,10 @@ def register_user():
             password=hashed_password,
             data_agreement=form.data_agreement.data
         )
-        # pylint: disable=no-member
         db.session.add(user)
         db.session.commit()
         print('Your account has been created. You are now able to log in')
         return jsonify({'message': 'Registration successful'}), 200
-        # pylint: enable=no-member
-    # pylint: disable=no-member
     print(form.errors)
     return jsonify({'errors': form.errors}), 400
 
@@ -72,10 +71,8 @@ def login():
                                 'token': access_token}), 200
             error_list['errors']['password'] = 'The password entered is incorrect'
             return jsonify(error_list), 400
-        # pylint: disable=no-member
         error_list['errors']['email'] = 'Email address not found.'
         return jsonify(error_list), 400
-    # pylint: disable=no-member
     print(form.errors)
     return jsonify({'errors': form.errors}), 400
 
