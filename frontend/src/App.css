@@ -22,11 +22,6 @@
   padding-right: 20px;
 } */
 
-.content-section {
-  padding: 20px; /* Optional: Add padding to separate the heading from the navbar */
-  position: relative;
-  top: 70px; /* Adjust the top value to create the desired space between the navbar and content */
-  z-index: 0; /* Ensure the content is below the navbar */
-}
+
 
 
