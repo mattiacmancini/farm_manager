@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import jwt_decode from 'jwt-decode'
+import jwt_decode from 'jwt-decode';
 
 function Login(props) {
   const [formData, setFormData] = useState({
@@ -9,9 +9,11 @@ function Login(props) {
     password: '',
     rememberMe: false,
   });
+
   const [formErrors, setFormErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -38,8 +40,11 @@ function Login(props) {
 
       if (response.status === 200) {
         localStorage.setItem('token', response.data.token);
-        console.log(jwt_decode(response.data.token));
+        console.log(jwt_decode)
         setSuccessMessage('User successfully logged-in!');
+        setTimeout(() => {
+          navigate(`/dashboard?message=loggedIn`); // Use navigate instead of history.push
+        }, 1000);
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
