@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import jwt_decode from 'jwt-decode';
+import { useAuth } from './AuthContext'; // Import useAuth
 
 function Login(props) {
+  const { login } = useAuth(); // Access the login function from AuthContext
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -45,12 +46,10 @@ function Login(props) {
       const response = await axios.post(`${props.baseUrl}login`, formData);
 
       if (response.status === 200) {
-        localStorage.setItem('token', response.data.token);
-        console.log(jwt_decode(response.data.token))
+        // localStorage.setItem('token', response.data.token);
+        login(response.data.token); // Call login function with user data
         setSuccessMessage('User successfully logged-in!');
-        setTimeout(() => {
-          navigate(`/dashboard`);
-        }, 2000);
+        navigate(`/dashboard`);
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
