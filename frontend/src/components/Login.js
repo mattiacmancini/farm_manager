@@ -49,7 +49,7 @@ function Login(props) {
         console.log(jwt_decode(response.data.token))
         setSuccessMessage('User successfully logged-in!');
         setTimeout(() => {
-          navigate(`/dashboard?message=loggedIn`); // Redirect to dashboard
+          navigate(`/dashboard`); // Redirect to dashboard
         }, 2000);
       }
     } catch (error) {
