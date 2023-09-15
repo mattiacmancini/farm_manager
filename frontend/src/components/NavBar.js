@@ -8,7 +8,7 @@ import LoginIcon from '@mui/icons-material/Login';
 export class NavBar extends Component {
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
         <div className='container'>
           <div className="navbar-nav mr-auto w-100">
             <Link to="/" className="nav-item nav-link"> <HomeIcon /> Home </Link>
