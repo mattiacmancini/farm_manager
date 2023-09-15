@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
+import { useAuth } from './AuthContext';
 
 function Register(props) {
   const [firstName, setFirstName] = useState('');
@@ -26,7 +27,7 @@ function Register(props) {
   const [passwordSubmitted, setPasswordSubmitted] = useState(false);
   const [repeatPasswordSubmitted, setRepeatPasswordSubmitted] = useState(false);
   const [agreementSubmitted, setAgreementSubmitted] = useState(false);
-  
+
   const submissionSetters = {
     firstname: setFirstNameSubmitted,
     lastname: setLastNameSubmitted,
@@ -41,6 +42,7 @@ function Register(props) {
 
   const [redirectToLogin, setRedirectToLogin] = useState(false);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
 
   const handleSubmit = async (e) => {
@@ -116,11 +118,10 @@ function Register(props) {
   };
 
   useEffect(() => {
-    const isAuthenticated = localStorage.getItem('token');
-    if (isAuthenticated) {
+    if (user) {
       navigate('/dashboard');
     }
-  }, [navigate]);
+  }, [user, navigate]);
 
   const handleInputChange = (setter, value, fieldName) => {
     setErrors(errors => ({

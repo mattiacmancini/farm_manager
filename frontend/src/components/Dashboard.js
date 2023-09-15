@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
+import { useAuth } from './AuthContext'; // Import useAuth hook
 
 function Dashboard() {
-  const isAuthenticated = localStorage.getItem('token');
+  const { user } = useAuth(); // Access user data from AuthContext
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!user) {
       navigate('/login');
     } else {
-      // Decode the JWT token to extract user information
-      const token = localStorage.getItem('token');
-      if (token) {
-        const decodedToken = jwt_decode(token);
-        console.log(decodedToken.sub.name)
-        setUserName(decodedToken.sub.name);
-      }
+      // You can directly access user data from the user object in AuthContext
+      console.log(user.name); // Assuming your user object has a 'name' property
+      setUserName(user.name);
     }
-  }, [isAuthenticated, navigate]);
+  }, [user, navigate]);
 
   return (
     <React.Fragment>
