@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 
@@ -26,6 +26,7 @@ function Register(props) {
   const [passwordSubmitted, setPasswordSubmitted] = useState(false);
   const [repeatPasswordSubmitted, setRepeatPasswordSubmitted] = useState(false);
   const [agreementSubmitted, setAgreementSubmitted] = useState(false);
+  
   const submissionSetters = {
     firstname: setFirstNameSubmitted,
     lastname: setLastNameSubmitted,
@@ -37,8 +38,9 @@ function Register(props) {
     confirm_password: setRepeatPasswordSubmitted,
     data_agreement: setAgreementSubmitted
   };
-  // const redirect = useNavigate();
 
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
+  const navigate = useNavigate();
 
 
   const handleSubmit = async (e) => {
@@ -81,8 +83,7 @@ function Register(props) {
           setPasswordSubmitted(true);
           setRepeatPasswordSubmitted(true);
           setAgreementSubmitted(true);
-          console.log("User registration successful:", response.data.message);
-          // redirect('/login');
+          setRedirectToLogin(true);
         }
       })
       .catch(error => {
@@ -113,6 +114,13 @@ function Register(props) {
         }
       });
   };
+
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem('token');
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [navigate]);
 
   const handleInputChange = (setter, value, fieldName) => {
     setErrors(errors => ({
@@ -241,9 +249,15 @@ function Register(props) {
           </div>
         </div>
         <div className="col-md-12">
-          <button className="btn btn-dark mt-2 mb-2" type="button" onClick={handleSubmit}>
-            Register
-          </button>
+          {redirectToLogin ? (
+            <Link className="btn btn-dark mt-2 mb-2" to="/login">
+              Login
+            </Link>
+          ) : (
+            <button className="btn btn-dark mt-2 mb-2" type="button" onClick={handleSubmit}>
+              Register
+            </button>
+          )}
         </div>
         <div className="border-top pt-3">
           <small className="text-muted">

@@ -66,7 +66,12 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
-                access_token = create_access_token(identity=user.email)
+                identity = {
+                    'name': user.firstname,
+                    'id': user.id,
+                    'email': user.email
+                }
+                access_token = create_access_token(identity=identity)
                 return jsonify({'message': 'User successfully logged in!',
                                 'token': access_token}), 200
             error_list['errors']['password'] = 'The password entered is incorrect'
