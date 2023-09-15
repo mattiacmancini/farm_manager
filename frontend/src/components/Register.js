@@ -26,6 +26,7 @@ function Register(props) {
   const [passwordSubmitted, setPasswordSubmitted] = useState(false);
   const [repeatPasswordSubmitted, setRepeatPasswordSubmitted] = useState(false);
   const [agreementSubmitted, setAgreementSubmitted] = useState(false);
+  
   const submissionSetters = {
     firstname: setFirstNameSubmitted,
     lastname: setLastNameSubmitted,
