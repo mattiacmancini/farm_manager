@@ -22,7 +22,7 @@ function NavBar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
       <div className='container'>
-        {user ? ( // Check if a user is authenticated
+        {user ? (
           <>
             <div className='col-md-2 navbar-nav nav-link'>
               <Link to="/dashboard" className="nav-item nav-link"> <SpaceDashboardIcon /> {userName}'s Dashboard </Link>
@@ -32,7 +32,7 @@ function NavBar() {
               <Link to="/register" className="nav-item nav-link"> <SettingsIcon /> Settings </Link>
             </div>
             <div className='col-md-1 navbar-nav nav-link'>
-              <Logout /> {/* Render the Logout component */}
+              <Logout />
             </div>
           </>
         ) : (
