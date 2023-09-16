@@ -10,11 +10,16 @@ function LeafletMap() {
     if (mapRef.current) {
       const map = L.map(mapRef.current).setView([51.505, -0.09], 12); // Set the initial center and zoom level
 
-      // Add the Bing Aerial Layer
-      L.tileLayer.bing({
-        bingMapsKey: localStorage.getItem('bing_api'), // Replace with your Bing Maps API Key
-        imagerySet: 'Aerial',
-      }).addTo(map);
+      if (localStorage.getItem('bing_api')) {
+        // User is authenticated, so initialize the Bing Maps layer
+        L.tileLayer.bing({
+          bingMapsKey: localStorage.getItem('bing_api'),
+          imagerySet: 'Aerial',
+        }).addTo(map);
+      } else {
+        // User is not authenticated, initialize a different map layer (e.g., OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+      }
 
       return () => {
         map.remove(); // Remove the map when the component unmounts
