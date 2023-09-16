@@ -26,6 +26,7 @@ app.config['SQLALCHEMY_BINDS'] = {
     )
 }
 app.config["JWT_SECRET_KEY"] = config.app['farmapp_jwt_key']
+app.config["BING_API_KEY"] = config.app['bing_api_key']
 # pylint: enable=no-member
 CORS(app)
 
