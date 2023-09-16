@@ -72,13 +72,16 @@ def login():
                     'email': user.email
                 }
                 access_token = create_access_token(identity=identity)
+                bing_token = app.config['BING_API_KEY']
                 return jsonify({'message': 'User successfully logged in!',
-                                'token': access_token}), 200
+                                'token': access_token,
+                                'bing_token': bing_token}), 200
             error_list['errors']['password'] = 'The password entered is incorrect'
             return jsonify(error_list), 400
         error_list['errors']['email'] = 'Email address not found.'
         return jsonify(error_list), 400
     print(form.errors)
+    print(bing_token)
     return jsonify({'errors': form.errors}), 400
 
 
@@ -86,7 +89,7 @@ def login():
 @jwt_required()
 def dashboard():
     current_user = get_jwt_identity()
-    return jsonify({'message': 'Welcome to the dashboard, {}'.format(current_user)})
+    return jsonify({'message': f"Welcome to the dashboard, {current_user}!"})
 
 @app.route('/logout', methods=['POST'])
 def logout():
