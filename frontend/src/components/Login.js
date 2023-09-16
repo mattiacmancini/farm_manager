@@ -46,9 +46,8 @@ function Login(props) {
       const response = await axios.post(`${props.baseUrl}login`, formData);
 
       if (response.status === 200) {
-        // localStorage.setItem('token', response.data.token);
-        login(response.data.token); // Call login function with user data
-        setSuccessMessage('User successfully logged-in!');
+        login(response.data); // Call login function with user data
+        setSuccessMessage(response.data.message);
         navigate(`/dashboard`);
       }
     } catch (error) {

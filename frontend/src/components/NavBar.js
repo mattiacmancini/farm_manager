@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect }from 'react';
 import { Link } from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
@@ -6,16 +6,23 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LoginIcon from '@mui/icons-material/Login';
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { useAuth } from './AuthContext'; // Import useAuth
+import { useAuth } from './AuthContext';
 import Logout from './Logout';
 
-function NavBar({ userName }) {
-  const { user } = useAuth(); // Access the user from AuthContext
+function NavBar() {
+  const { user } = useAuth();
+  const [userName, setUserName] = useState('');
+  
+  useEffect(() => {
+    if (user && user.sub && user.sub.name) {
+      setUserName(user.sub.name);
+    }
+  }, [user]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
       <div className='container'>
-        {user ? ( // Check if a user is authenticated
+        {user ? (
           <>
             <div className='col-md-2 navbar-nav nav-link'>
               <Link to="/dashboard" className="nav-item nav-link"> <SpaceDashboardIcon /> {userName}'s Dashboard </Link>
@@ -25,7 +32,7 @@ function NavBar({ userName }) {
               <Link to="/register" className="nav-item nav-link"> <SettingsIcon /> Settings </Link>
             </div>
             <div className='col-md-1 navbar-nav nav-link'>
-              <Logout /> {/* Render the Logout component */}
+              <Logout />
             </div>
           </>
         ) : (
