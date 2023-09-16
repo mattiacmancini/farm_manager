@@ -7,9 +7,10 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   // Function to set the user when they log in
-  const login = (token) => {
-    const userData = jwt_decode(token);
-    localStorage.setItem('token', token);
+  const login = (data) => {
+    const userData = jwt_decode(data.token);
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('bing_api', data.bing_token)
     setUser(userData);
     console.log(userData)
   };
@@ -17,6 +18,7 @@ export const AuthProvider = ({ children }) => {
   // Function to log out the user
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('bing_api')
   setUser(null);
   };
 
