@@ -9,7 +9,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useAuth } from './AuthContext'; // Import useAuth
 import Logout from './Logout';
 
-function NavBar() {
+function NavBar({ userName }) {
   const { user } = useAuth(); // Access the user from AuthContext
 
   return (
@@ -18,7 +18,7 @@ function NavBar() {
         {user ? ( // Check if a user is authenticated
           <>
             <div className='col-md-2 navbar-nav nav-link'>
-              <Link to="/dashboard" className="nav-item nav-link"> <SpaceDashboardIcon /> Dashboard </Link>
+              <Link to="/dashboard" className="nav-item nav-link"> <SpaceDashboardIcon /> {userName}'s Dashboard </Link>
             </div>
             <div className='col-md-8'></div>
             <div className='col-md-1 navbar-nav nav-link'>
