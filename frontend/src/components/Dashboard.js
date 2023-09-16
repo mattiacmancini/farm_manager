@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from './AuthContext'; // Import useAuth hook
+import { useAuth } from './AuthContext';
 
 function Dashboard() {
-  const { user } = useAuth(); // Access user data from AuthContext
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
 
@@ -11,9 +11,7 @@ function Dashboard() {
     if (!user) {
       navigate('/login');
     } else {
-      // You can directly access user data from the user object in AuthContext
-      console.log(user.name); // Assuming your user object has a 'name' property
-      setUserName(user.name);
+      setUserName(user.sub.name);
     }
   }, [user, navigate]);
 

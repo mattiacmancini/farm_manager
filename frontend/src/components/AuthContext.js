@@ -8,31 +8,25 @@ export const AuthProvider = ({ children }) => {
 
   // Function to set the user when they log in
   const login = (token) => {
-    // Decode the user data from the token
     const userData = jwt_decode(token);
-  
-    // Store the token in local storage
     localStorage.setItem('token', token);
-  
-    // Set the user data in the state
     setUser(userData);
+    console.log(userData)
   };
 
   // Function to log out the user
   const logout = () => {
-    localStorage.removeItem('token'); // Remove the token from local storage
-    setUser(null);
+    localStorage.removeItem('token');
+  setUser(null);
   };
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
   
-    // If a token exists, set the user
     if (storedToken) {
-      // You may want to decode the token and perform additional checks here
-      setUser({ token: storedToken });
+      const userData = jwt_decode(storedToken);
+      setUser(userData);
     }
-  
     // This will trigger a re-render when the user changes
   }, []);
 
