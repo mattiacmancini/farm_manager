@@ -11,18 +11,22 @@ function LeafletMap() {
 
   useEffect(() => {
     if (mapRef.current) {
-      const map = L.map(mapRef.current).setView([51.505, -0.09], 12); // Set the initial center and zoom level
-
-      if (localStorage.getItem('bing_api')) {
-        // User is authenticated, so initialize the Bing Maps layer
-        L.tileLayer.bing({
+      // Define available base maps
+      const baseMaps = {
+        'OpenStreetMap': L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }),
+        'Bing Maps': L.tileLayer.bing({
           bingMapsKey: localStorage.getItem('bing_api'),
           imagerySet: 'Aerial',
-        }).addTo(map);
-      } else {
-        // User is not authenticated, initialize a different map layer (e.g., OpenStreetMap)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-      }
+        }),
+      };
+
+      // Initialize the map with Bing Maps as the default base layer
+      const map = L.map(mapRef.current, {
+        layers: [baseMaps['Bing Maps']], // Specify Bing Maps as the default base layer
+      }).setView([51.505, -0.09], 12); // Set the initial center and zoom level
 
       // Create a FeatureGroup for storing drawn polygons
       const drawnItems = new L.FeatureGroup().addTo(map);
@@ -68,6 +72,9 @@ function LeafletMap() {
         setDrawnPolygons([]); // Clear the stored polygon geometries when deleted
       });
 
+      // Create a control for switching between base maps
+      L.control.layers(baseMaps).addTo(map);
+
       return () => {
         map.remove(); // Remove the map when the component unmounts
       };
@@ -75,7 +82,9 @@ function LeafletMap() {
   }, []);
 
   return (
+    <div>
       <div ref={mapRef} style={{ width: '100%', height: '500px' }}></div>
+    </div>
   );
 }
 
