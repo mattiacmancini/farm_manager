@@ -7,7 +7,7 @@ import 'leaflet-draw/dist/leaflet.draw.css'; // Import Leaflet Draw CSS
 
 function LeafletMap() {
   const mapRef = useRef(null);
-  const [drawnPolygon, setDrawnPolygon] = useState(null); // State to store the currently drawn polygon
+  const [drawnPolygons, setDrawnPolygons] = useState([]); // State to store drawn polygons
 
   useEffect(() => {
     if (mapRef.current) {
@@ -48,7 +48,7 @@ function LeafletMap() {
       map.on(L.Draw.Event.CREATED, (event) => {
         const layer = event.layer;
         const geometry = layer.toGeoJSON().geometry; // Save the drawn polygon's geometry
-        setDrawnPolygon(geometry); // Store the drawn polygon geometry
+        setDrawnPolygons((prevPolygons) => [...prevPolygons, geometry]); // Store the drawn polygon geometry
         drawnItems.addLayer(layer); // Add the drawn polygon to the feature group
       });
 
@@ -57,13 +57,15 @@ function LeafletMap() {
         const layers = event.layers;
         layers.eachLayer((layer) => {
           const geometry = layer.toGeoJSON().geometry; // Get the edited polygon's geometry
-          setDrawnPolygon(geometry); // Update the stored polygon geometry
+          setDrawnPolygons((prevPolygons) =>
+            prevPolygons.map((polygon, index) => (index === 0 ? geometry : polygon))
+          ); // Update the stored polygon geometry
         });
       });
 
       // Event listener for when a polygon is deleted
-      map.on('draw:deleted', (event) => {
-        setDrawnPolygon(null); // Clear the stored polygon geometry when deleted
+      map.on('draw:deleted', () => {
+        setDrawnPolygons([]); // Clear the stored polygon geometries when deleted
       });
 
       return () => {
@@ -73,9 +75,7 @@ function LeafletMap() {
   }, []);
 
   return (
-    <div>
       <div ref={mapRef} style={{ width: '100%', height: '500px' }}></div>
-    </div>
   );
 }
 
